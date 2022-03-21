@@ -154,9 +154,9 @@ options::options(int argc, const char * const argv[])
 
 
   if (vm.count("floyd-steinberg")) dithering=dithering_type::floyd_steinberg;
-  if (vm.count("methode1")) dithering=dithering_type::methode_1; // changer les noms ici
-  if (vm.count("methode2")) dithering=dithering_type::methode_2; // changer les noms ici
-  
+  if (vm.count("methode1")) dithering=dithering_type::jarvis_judice_ninke; // changer les noms ici
+  if (vm.count("methode2")) dithering=dithering_type::burkes; // changer les noms ici
+
 
 
   // other consistancy checks

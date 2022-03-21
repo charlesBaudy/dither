@@ -5,8 +5,8 @@
 
 enum class dithering_type { none,
                             floyd_steinberg,
-                            methode_1, // votre nom de methode ici
-                            methode_2  // votre nom de methode ici
+                            jarvis_judice_ninke, // votre nom de methode ici
+                            burkes // votre nom de methode ici
                           };
 
 
@@ -32,6 +32,23 @@ const diffusion_matrix floyd_steinberg_matrix =
  };
 
 // vos matrices ici
+
+const diffusion_matrix jarvis_matrix =
+  {
+    48,
+    {{0,0,0,7,5},
+     {3,5,7,5,3},
+     {1,3,5,3,1}}
+  };
+
+const diffusion_matrix burkes_matrix =
+  {
+    32,
+    {{0,0,0,8,4},
+     {2,4,8,4,2},
+     {0,0,0,0,0}}
+  };
+
 
 void quantize_and_dither(const std::string & input_filename,
                          const std::string & output_filename,

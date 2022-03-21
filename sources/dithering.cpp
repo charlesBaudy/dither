@@ -47,57 +47,71 @@ void quantize_and_dither(const std::string & input_filename,
      // dispersons l'erreur
 
      // VOTRE CODE ICI
-     int indexX = 0;
-     int indexY = 0;
-
      int erreurRouge = p.r - q.r;
      int erreurVert = p.g - q.g;
      int erreurBleu = p.b - q.b;
 
-     for(int i=0;i<matrix_width;i++) {
-       for(int j=0;j<matrix_height;i++) {
+     //printf("%d : %d : %d\n",erreurRouge,erreurVert,erreurBleu);
 
-         if ((i<=2)&&(j==0)) {
-           printf("blc\n");
-         } else {
-           if((((x+i-2<0)||x+i-2>w-1)) && (((y+j<0)||(y+j>h-1)))){
-             printf("blc2 \n");
-           } else {
-             indexX = x+2-i;
-             indexY = y+j;
-             printf("x = %d : x+2-i = %d -> ",x,indexX);
-             printf("y = %d : y+j = %d\n",y,indexY);
-             int r = image.pixel(indexX,indexY).r + ((matrix.weights[i][j]/div)*erreurRouge);
-             int g = image.pixel(indexX,indexY).g + ((matrix.weights[i][j]/div)*erreurVert);
-             int b = image.pixel(indexX,indexY).b += ((matrix.weights[i][j]/div)*erreurBleu);
-             if (r>255){
+     for(size_t i = 0;i<5;i++){
+       for (size_t j = 0; j < 3; j++) {
+         size_t indexX = x-2+i;
+         size_t indexY = y+j;
+
+         if (indexX<w && indexX>=0) {
+           if(indexY<h && indexY>=0) {
+             //printf("rentre!!!\n");
+             int poids = matrix.weights[j][i];
+             int r = image.pixel(indexX,indexY).r + erreurRouge * poids/div;
+             int g = image.pixel(indexX,indexY).g + erreurVert * poids/div;
+             int b = image.pixel(indexX,indexY).b + erreurBleu * poids/div;
+
+             //printf("%d,%d -> %d\n",i,j,facteur);
+
+             if (r<=255) {
+               if (r>=0) {
+                 image.pixel(indexX,indexY).r = r;
+               } else {
+                 image.pixel(indexX,indexY).r = 0;
+               }
+             } else {
                image.pixel(indexX,indexY).r = 255;
-             } else if (r<0){
-               image.pixel(indexX,indexY).r = 0;
-             } else {
-               image.pixel(indexX,indexY).r = r;
              }
 
-             if (g>255){
-               image.pixel(indexX,indexY).g = 255;
-             } else if (g<0){
-               image.pixel(indexX,indexY).g = 0;
+             if (b<=255) {
+               if (b>=0) {
+                 image.pixel(indexX,indexY).b = b;
+               } else {
+                 image.pixel(indexX,indexY).b = 0;
+               }
              } else {
-               image.pixel(indexX,indexY).g = g;
-             }
-
-             if (b>255){
                image.pixel(indexX,indexY).b = 255;
-             } else if (b<0){
-               image.pixel(indexX,indexY).b = 0;
-             } else {
-               image.pixel(indexX,indexY).b = b;
              }
-           }
-         }
-       }
-     }
-    }
 
+             if (g<=255) {
+               if (g>=0) {
+                 image.pixel(indexX,indexY).g = g;
+               } else {
+                 image.pixel(indexX,indexY).g = 0;
+               }
+             } else {
+               image.pixel(indexX,indexY).g = 255;
+             }
+
+           } else {
+             printf("y depasse\n");
+           }
+         } else {
+           printf("x depasse\n");
+         }
+
+
+
+       } // fin for j
+     } // fin for i
+
+
+    }
+    printf("fin\n");
   image.save(output_filename);
  }
