@@ -1,0 +1,8 @@
+sources/dithering.o: sources/dithering.cpp includes/bitmap.hpp includes/dithering.hpp includes/pixel.hpp
+
+sources/main.o: sources/main.cpp includes/options.hpp
+
+sources/options.o: sources/options.cpp 
+
+sources/pixel.o: sources/pixel.cpp 
+
